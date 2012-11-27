@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["ore"]
   s.email       = ["orenoimac@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: connects adhearsion with google tts}
-  s.description = %q{TODO: this gem overrides adhearsion#say and use google tts to speak}
+  s.summary     = %q{connects adhearsion with google tts}
+  s.description = %q{this gem overrides adhearsion#say and use google tts to speak}
 
   s.rubyforge_project = "google_tts_plugin"
 
