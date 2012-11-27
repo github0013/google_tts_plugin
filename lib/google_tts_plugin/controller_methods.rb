@@ -79,7 +79,8 @@ module GoogleTTSPlugin
         def mp3_file
           Pathname(
             Tempfile.open(%w[google_tts .mp3]) do |t|
-              mp3 = Mechanize.new{|agent| agent.user_agent_alias = "Mac Safari" }.get("#{config.google_tts}", params).body
+              mp3 = Mechanize.new{|agent| agent.user_agent_alias = "Mac Safari" }.
+                              get("#{config.google_tts}", params).body
               t.write mp3
               t.path
             end
