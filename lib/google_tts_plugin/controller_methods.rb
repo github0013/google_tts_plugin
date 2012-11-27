@@ -2,7 +2,7 @@
 module GoogleTTSPlugin
   module ControllerMethods
     
-    class GoogleTTSToSln
+    class TTSToSln
       attr_reader :params
 
       def initialize(options = {})
@@ -24,7 +24,7 @@ module GoogleTTSPlugin
         sln_file.dirname.join filename 
       end
 
-      def tts_to_sln
+      def convert
         return sln_file_path_without_extension if has_sln?
         
         volume = params[:volume].to_i / 100.0
@@ -104,11 +104,11 @@ module GoogleTTSPlugin
     def say(text, options = {})
       params = {}
       params[:q] = text.to_s
-      params[:tl] = options[:language] || GoogleTTSToSln.config.language
-      params[:speed] = options[:speed] || GoogleTTSToSln.config.speed.to_i
-      params[:volume] = options[:volume] || GoogleTTSToSln.config.volume.to_i
+      params[:tl] = options[:language] || TTSToSln.config.language
+      params[:speed] = options[:speed] || TTSToSln.config.speed.to_i
+      params[:volume] = options[:volume] || TTSToSln.config.volume.to_i
       
-      play GoogleTTSToSln.new(params).tts_to_sln.to_s
+      play TTSToSln.new(params).convert.to_s
     end
 
   end

@@ -9,7 +9,7 @@ module GoogleTTSPlugin
       Kernel.stub(:system)
     end
     
-    describe ControllerMethods::GoogleTTSToSln do
+    describe ControllerMethods::TTSToSln do
       let(:params) do
         {
           q: "google tts!",
@@ -18,7 +18,7 @@ module GoogleTTSPlugin
           volume: 100
         }
       end
-      subject(:google_tts_to_sln){ ControllerMethods::GoogleTTSToSln.new params }
+      subject(:tts_to_sln_class){ ControllerMethods::TTSToSln.new params }
       before(:each) do
         Adhearsion.config[:google_tts_plugin].stub(:mpg123_path).and_return "/usr/bin/mpg123"
         Adhearsion.config[:google_tts_plugin].stub(:sox_path).and_return "/usr/bin/sox"
@@ -29,14 +29,14 @@ module GoogleTTSPlugin
       
       context '#has_sln?' do
         context "when sln doesn't exist" do 
-          subject{ google_tts_to_sln.send :has_sln? }
+          subject{ tts_to_sln_class.send :has_sln? }
           it{ should be_false }
         end
         
         context "when sln exists" do
           before(:each) do
             subject.stub(:sln_file).and_return Tempfile.open(["test", ".sln"]){|f| f.path}
-            subject{ google_tts_to_sln.send :has_sln? }
+            subject{ tts_to_sln_class.send :has_sln? }
           end
 
           it{ should be_true }
@@ -44,12 +44,12 @@ module GoogleTTSPlugin
       end
       
       context '#mp3_file' do
-        subject{ google_tts_to_sln.send(:mp3_file).to_s }
+        subject{ tts_to_sln_class.send(:mp3_file).to_s }
         it{ should =~ /.mp3$/ }
       end
       
       context '#wav_file' do
-        subject{ google_tts_to_sln.send(:wav_file).to_s }
+        subject{ tts_to_sln_class.send(:wav_file).to_s }
         
         it{ should =~ /.wav$/ }
       end
@@ -97,7 +97,7 @@ module GoogleTTSPlugin
         end
       end
       
-      context '#tts_to_sln' do
+      context '#convert' do
         
         context "has sln file" do
           before(:each) do
@@ -105,7 +105,7 @@ module GoogleTTSPlugin
             subject.stub(:sln_file).and_return Pathname(test_sln_file)
           end
           
-          its(:tts_to_sln){ should == google_tts_to_sln.sln_file_path_without_extension }
+          its(:convert){ should == tts_to_sln_class.sln_file_path_without_extension }
         end
         
         context "does NOT have sln file" do
@@ -122,40 +122,40 @@ module GoogleTTSPlugin
 
           specify do
             FileUtils.should_receive(:mkdir_p)
-            subject.tts_to_sln
+            subject.convert
           end
 
           specify do
             FileUtils.should_receive(:mv).with("#{test_volume_file}", "#{test_target_file}")
-            subject.tts_to_sln
+            subject.convert
           end
 
           specify do 
             Kernel.should_receive(:system).once.ordered.with("/usr/bin/sox --volume 1.0 #{test_target_file} #{test_volume_file}")
             Kernel.should_receive(:system).once.ordered.with("/usr/bin/sox #{test_target_file} #{sox_options} #{test_sln_file} tempo 1.0")
-            subject.tts_to_sln
+            subject.convert
           end
           
-          its(:tts_to_sln){ subject.should == google_tts_to_sln.sln_file_path_without_extension }
+          its(:convert){ subject.should == tts_to_sln_class.sln_file_path_without_extension }
           
           context "speed control" do
-            subject{ ControllerMethods::GoogleTTSToSln.new params.merge({speed: 57}) }
+            subject{ ControllerMethods::TTSToSln.new params.merge({speed: 57}) }
             
             specify do
               Kernel.should_receive(:system).once.ordered
               Kernel.should_receive(:system).once.ordered.with("/usr/bin/sox #{test_target_file} #{sox_options} #{test_sln_file} tempo 0.57")
-              subject.tts_to_sln
+              subject.convert
             end
           end
           
           context "volume control" do
             let(:test_volume_file){ "/tmp/test-v1.5.mp3" }
-            subject{ ControllerMethods::GoogleTTSToSln.new params.merge({volume: 150}) }
+            subject{ ControllerMethods::TTSToSln.new params.merge({volume: 150}) }
             
             specify do
               Kernel.should_receive(:system).once.ordered.with("/usr/bin/sox --volume 1.5 #{test_target_file} #{test_volume_file}")
               Kernel.should_receive(:system).once.ordered
-              subject.tts_to_sln
+              subject.convert
             end
           end
         end
@@ -175,20 +175,20 @@ module GoogleTTSPlugin
       it{ should respond_to :say }
       
       describe '#say' do
-        let(:google_tts){ mock("GoogleTTSToSln").as_null_object }
+        let(:google_tts){ mock("TTSToSln").as_null_object }
         before(:each) do
           subject.stub :play
         end
         
         specify do
-          ControllerMethods::GoogleTTSToSln.should_receive(:new).and_return google_tts
-          google_tts.should_receive :tts_to_sln
+          ControllerMethods::TTSToSln.should_receive(:new).and_return google_tts
+          google_tts.should_receive :convert
 
           subject.say "test speech"
         end
         
         specify do
-          ControllerMethods::GoogleTTSToSln.stub(:new).and_return google_tts
+          ControllerMethods::TTSToSln.stub(:new).and_return google_tts
           subject.should_receive :play
           
           subject.say "test speech"
