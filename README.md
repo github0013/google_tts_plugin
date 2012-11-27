@@ -45,7 +45,7 @@ Adhearsion.config.google_tts_plugin do |config|
   config.speed = "120%"
   config.volume = "130%"
   #config.google_tts = "change here if google changes tts uri" 
-  config.mpg123_path = "/usr/bin/mpg123" # change it to your path
+  config.mpg123_path = "/usr/bin/mpg123" # change it to your path or nil if not installed (but required on centos)
   config.sox_path = "/usr/bin/sox"       # change it to your path
 end
 
