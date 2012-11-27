@@ -71,13 +71,13 @@ module GoogleTTSPlugin
         end
 
         def wav_file
-          @wav_file ||= mp3_file.dirname.join("#{Pathname(mp3_file).basename(".mp3")}.wav").tap do |wav_file_path|
+          mp3_file.dirname.join("#{Pathname(mp3_file).basename(".mp3")}.wav").tap do |wav_file_path|
             Kernel.system "#{config.mpg123_path} -w #{wav_file_path} #{mp3_file}"
           end
         end
 
         def mp3_file
-          @mp3_file ||= Pathname(
+          Pathname(
             Tempfile.open(%w[google_tts .mp3]) do |t|
               mp3 = Mechanize.new{|agent| agent.user_agent_alias = "Mac Safari" }.get("#{config.google_tts}", params).body
               t.write mp3
@@ -91,7 +91,7 @@ module GoogleTTSPlugin
         end
         
         def target_file
-          if mpg123?
+          @target_file ||= if mpg123?
             mp3_file
             wav_file
           else
