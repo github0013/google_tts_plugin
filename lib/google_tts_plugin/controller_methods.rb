@@ -103,7 +103,7 @@ module GoogleTTSPlugin
     
     def say(text, options = {})
       params = {}
-      params[:q] = text.to_s.toutf8
+      params[:q] = text.to_s
       params[:tl] = options[:language] || GoogleTTSToSln.config.language
       params[:speed] = options[:speed] || GoogleTTSToSln.config.speed.to_i
       params[:volume] = options[:volume] || GoogleTTSToSln.config.volume.to_i
