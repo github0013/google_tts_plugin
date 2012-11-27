@@ -22,7 +22,7 @@ Make sure you have `sox` installed (+ `mpg123` on centos - CentOS Prerequisite h
     sudo yum install sox
 
     # ubuntu
-    sudo sudo apt-get install sox libsox-fmt-all
+    sudo apt-get install sox libsox-fmt-all
 
     # osx
     brew install sox
@@ -33,7 +33,7 @@ Add this line to your adhearsion application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    bundle
 
 ## Usage
 
@@ -45,8 +45,8 @@ Adhearsion.config.google_tts_plugin do |config|
   config.speed = "120%"
   config.volume = "130%"
   #config.google_tts = "change here if google changes tts uri" 
-  config.mpg123_path = "/usr/bin/mpg123"
-  config.sox_path = "/usr/bin/sox"
+  config.mpg123_path = "/usr/bin/mpg123" # change it to your path
+  config.sox_path = "/usr/bin/sox"       # change it to your path
 end
 
 
