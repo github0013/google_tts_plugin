@@ -1,6 +1,6 @@
 GoogleTTSPlugin
 ==========================
-this gem overrides `adhearsion#say` and use google tts to speak( [try](http://translate.google.com/translate_tts?tl=en&q=this%20is%20a%20sample%20tts%20audio%20from%20google%20tts.) ).
+this gem overrides `adhearsion#say` and uses google tts to speak( [try](http://translate.google.com/translate_tts?tl=en&q=this%20is%20a%20sample%20tts%20audio%20from%20google%20tts.) ).
 
 it can
 
