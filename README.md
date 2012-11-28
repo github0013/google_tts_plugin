@@ -7,6 +7,7 @@ it can
 - speak in many languages 
 - change speech speed
 - change speech volume
+- seed sln files from CSV
 
 ``` ruby
 # languages
@@ -62,6 +63,21 @@ class SimonGame < Adhearsion::CallController
   end
 end
 ```
+
+# tasks
+
+`rake google_tts_plugin:seed[csv_file]`
+Downloads .mp3 from google, convert and save in .sln.
+Since **say** in your **CallController** will do this at run time, its initial call can delay and you can prevent it with this task.
+
+``` csv
+text,language,speed,volume
+hello world,,,
+世界の皆さんこんにちわ,ja,50,80
+```
+*`text` is required  
+Plugin default values will be applied for blanks.
+
 
 ## Contributing
 
