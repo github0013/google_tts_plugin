@@ -102,13 +102,18 @@ module GoogleTTSPlugin
     end
     
     def say(text, options = {})
+      play tts_sound_file_path(text, options)
+    end
+    alias :speak :say
+    
+    def tts_sound_file_path(text, options = {})
       params = {}
       params[:q] = text.to_s
       params[:tl] = options[:language] || TTSToSln.config.language
       params[:speed] = options[:speed] || TTSToSln.config.speed.to_i
       params[:volume] = options[:volume] || TTSToSln.config.volume.to_i
       
-      play TTSToSln.new(params).convert.to_s
+      TTSToSln.new(params).convert.to_s
     end
 
   end

@@ -173,8 +173,9 @@ module GoogleTTSPlugin
       end
 
       it{ should respond_to :say }
+      it{ should respond_to :speak }
       
-      describe '#say' do
+      describe '#tts_sound_file_path' do
         let(:google_tts){ mock("TTSToSln").as_null_object }
         before(:each) do
           subject.stub :play
@@ -193,6 +194,17 @@ module GoogleTTSPlugin
           
           subject.say "test speech"
         end
+        
+        describe "#say (#speak)" do
+          specify do
+            subject.should_receive(:tts_sound_file_path).twice
+
+            %w[say speak].each do |method|
+              subject.send method, "test speech"
+            end
+          end
+        end
+        
       end
     end
   end
