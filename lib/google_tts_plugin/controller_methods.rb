@@ -112,6 +112,7 @@ module GoogleTTSPlugin
       params[:tl] = options[:language] || TTSToSln.config.language
       params[:speed] = options[:speed] || TTSToSln.config.speed.to_i
       params[:volume] = options[:volume] || TTSToSln.config.volume.to_i
+      params[:client] = opetions[:client] || TTSToSln.config.client
       
       TTSToSln.new(params).convert.to_s
     end
