@@ -10,6 +10,7 @@ module GoogleTTSPlugin
       google_tts "http://translate.google.com/translate_tts", desc: "google tts uri"
       mpg123_path "", desc: "CentOS Prerequisite: Since CentOS does not have MP3 capability installed with sox, you will have to install mpg123 before you can convert MP3 files for use with Asterisk. (http://ofps.oreilly.com/titles/9780596517342/asterisk-Initial.html)"
       sox_path "", desc: "please make sure you have sox installed"
+      client "t", desc: "skip Google's image verification step"
     end
    
     class CsvToSln
@@ -23,7 +24,8 @@ module GoogleTTSPlugin
             this_params = {
               language: config.language,
               speed:    config.speed,
-              volume:   config.volume
+              volume:   config.volume,
+              client:   config.client
             }
             
             this_params.keys.each do |key|
